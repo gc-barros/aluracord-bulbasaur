@@ -21,7 +21,23 @@ function Titulo(props) {
 
 export default function PaginaInicial() {
   const [username, setUsername] = React.useState("gc-barros");
+  const [gitname, setGitname] = React.useState("Gabriel Barros");
   const roteamento = useRouter();
+
+  let dadosGit = () => {
+    fetch(`https://api.github.com/users/${username}`, { 
+                 headers: {
+                      'Accept' : 'application/vnd.github.v3+json'
+                  }})
+		.then(response => response.json())
+		.then( data => {
+                    console.log(data.name)
+                    setGitname(data.name)
+                })
+		.catch( error => console.error(error));
+  }
+
+  // dadosGit();
 
   return (
     <>
@@ -61,8 +77,7 @@ export default function PaginaInicial() {
             as="form"
             onSubmit={function (event) {
               event.preventDefault();
-              console.log("submit");
-              roteamento.push('/chat');
+              roteamento.push("/chat");
             }}
             styleSheet={{
               display: "flex",
@@ -89,7 +104,7 @@ export default function PaginaInicial() {
             <TextField
               fullWidth
               styleSheet={{
-                marginBottom: ".5rem"
+                marginBottom: ".5rem",
               }}
               textFieldColors={{
                 neutral: {
@@ -100,16 +115,21 @@ export default function PaginaInicial() {
                 },
               }}
               value={username}
+              onClick={() => {
+                setUsername("");
+              }}
               onChange={function (event) {
                 // Onde tá o valor?
                 const valor = event.target.value;
                 // Trocar o valor da variável
                 setUsername(valor);
+                // dadosGit();
               }}
             />
             <Button
               type="submit"
               label="Entrar"
+              disabled={username.length < 3}
               fullWidth
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
@@ -137,12 +157,28 @@ export default function PaginaInicial() {
               minHeight: "240px",
             }}
           >
+            <Text
+              variant="body4"
+              styleSheet={{
+                color: appConfig.theme.colors.bulbasaur[100],
+                backgroundColor: appConfig.theme.colors.neutrals[900],
+                padding: "3px 10px",
+                borderRadius: "1000px"
+              }}
+            >
+              {gitname}
+            </Text>
             <Image
               styleSheet={{
                 borderRadius: "50%",
                 marginBottom: "16px",
+                marginTop: "1rem"
               }}
-              src={`https://github.com/${username}.png`}
+              src={
+                username.length > 2
+                  ? `https://github.com/${username}.png`
+                  : `https://github.com/gc-barros.png`
+              }
             />
             <Text
               variant="body4"
