@@ -1,5 +1,5 @@
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
-import React from "react";
+import React, { useEffect } from "react";
 import appConfig from "../config.json";
 import { useRouter } from 'next/router';
 
@@ -24,21 +24,22 @@ export default function PaginaInicial() {
   const [gitname, setGitname] = React.useState("Gabriel Barros");
   const roteamento = useRouter();
 
+  
   let dadosGit = () => {
     fetch(`https://api.github.com/users/${username}`, { 
-                 headers: {
-                      'Accept' : 'application/vnd.github.v3+json'
-                  }})
-		.then(response => response.json())
-		.then( data => {
-                    console.log(data.name)
-                    setGitname(data.name)
-                })
-		.catch( error => console.error(error));
-  }
+      headers: {
+        'Accept' : 'application/vnd.github.v3+json'
+      }})
+      .then(response => response.json())
+      .then( data => {
+        console.log(data.name)
+        setGitname(data.name)
+      })
+      .catch( error => console.error(error));
+    }
 
-  // dadosGit();
-
+  useEffect(dadosGit, [username]);
+    
   return (
     <>
       <Box
@@ -65,11 +66,13 @@ export default function PaginaInicial() {
             },
             width: "100%",
             maxWidth: "700px",
-            borderRadius: "5px",
+            borderRadius: "1rem 0 1rem",
             padding: "32px",
             margin: "16px",
             boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
             backgroundColor: appConfig.theme.colors.neutrals[700],
+            border: "1px solid",
+            borderColor: appConfig.theme.colors.neutrals[800],
           }}
         >
           {/* Formulário */}
@@ -105,6 +108,7 @@ export default function PaginaInicial() {
               fullWidth
               styleSheet={{
                 marginBottom: ".5rem",
+                borderRadius: ".7rem 0 .7rem",
               }}
               textFieldColors={{
                 neutral: {
@@ -115,9 +119,6 @@ export default function PaginaInicial() {
                 },
               }}
               value={username}
-              onClick={() => {
-                setUsername("");
-              }}
               onChange={function (event) {
                 // Onde tá o valor?
                 const valor = event.target.value;
@@ -137,6 +138,9 @@ export default function PaginaInicial() {
                 mainColorLight: appConfig.theme.colors.bulbasaur[300],
                 mainColorStrong: appConfig.theme.colors.bulbasaur[100],
               }}
+              styleSheet={{
+                borderRadius: ".7rem 0 .7rem",
+              }}
             />
           </Box>
           {/* Formulário */}
@@ -151,10 +155,11 @@ export default function PaginaInicial() {
               padding: "16px",
               backgroundColor: appConfig.theme.colors.neutrals[800],
               border: "1px solid",
-              borderColor: appConfig.theme.colors.neutrals[999],
+              borderColor: appConfig.theme.colors.neutrals[900],
               borderRadius: "10px",
               flex: 1,
               minHeight: "240px",
+              borderRadius: "1rem 0 1rem",
             }}
           >
             <Text
@@ -163,7 +168,7 @@ export default function PaginaInicial() {
                 color: appConfig.theme.colors.bulbasaur[100],
                 backgroundColor: appConfig.theme.colors.neutrals[900],
                 padding: "3px 10px",
-                borderRadius: "1000px"
+                borderRadius: "1000px",
               }}
             >
               {gitname}
@@ -172,7 +177,7 @@ export default function PaginaInicial() {
               styleSheet={{
                 borderRadius: "50%",
                 marginBottom: "16px",
-                marginTop: "1rem"
+                marginTop: "1rem",
               }}
               src={
                 username.length > 2
