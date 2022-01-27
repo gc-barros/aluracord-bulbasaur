@@ -111,11 +111,12 @@ export default function PaginaInicial() {
               marginBottom: "32px",
             }}
           >
-            <Titulo tag="h2">Boas-vindas de volta!</Titulo>
+            <Titulo tag="h2">🌷 Bem-vindo(a) de volta!</Titulo>
             <Text
               variant="body3"
               styleSheet={{
                 marginBottom: "32px",
+                marginTop: ".5rem",
                 color: appConfig.theme.colors.neutrals[300],
               }}
             >
@@ -124,6 +125,9 @@ export default function PaginaInicial() {
 
             <TextField
               fullWidth
+              styleSheet={{
+                marginBottom: ".5rem"
+              }}
               textFieldColors={{
                 neutral: {
                   textColor: appConfig.theme.colors.neutrals[200],
