@@ -20,8 +20,7 @@ function Titulo(props) {
 }
 
 export default function PaginaInicial() {
-  const [username, setUsername] = React.useState("gc-barros");
-  const [gitname, setGitname] = React.useState("Gabriel Barros");
+  const [username, setUsername] = React.useState('');
   const roteamento = useRouter();
 
   
@@ -33,13 +32,10 @@ export default function PaginaInicial() {
       .then(response => response.json())
       .then( data => {
         console.log(data.name)
-        setGitname(data.name)
       })
       .catch( error => console.error(error));
     }
 
-  useEffect(dadosGit, [username]);
-    
   return (
     <>
       <Box
@@ -119,6 +115,7 @@ export default function PaginaInicial() {
                 },
               }}
               value={username}
+              placeholder="GitHub username"
               onChange={function (event) {
                 // Onde tá o valor?
                 const valor = event.target.value;
@@ -162,17 +159,6 @@ export default function PaginaInicial() {
               borderRadius: "1rem 0 1rem",
             }}
           >
-            <Text
-              variant="body4"
-              styleSheet={{
-                color: appConfig.theme.colors.bulbasaur[100],
-                backgroundColor: appConfig.theme.colors.neutrals[900],
-                padding: "3px 10px",
-                borderRadius: "1000px",
-              }}
-            >
-              {gitname}
-            </Text>
             <Image
               styleSheet={{
                 borderRadius: "50%",
@@ -182,7 +168,7 @@ export default function PaginaInicial() {
               src={
                 username.length > 2
                   ? `https://github.com/${username}.png`
-                  : `https://github.com/gc-barros.png`
+                  : `https://i.gifer.com/8XbJ.gif`
               }
             />
             <Text
@@ -192,9 +178,10 @@ export default function PaginaInicial() {
                 backgroundColor: appConfig.theme.colors.neutrals[900],
                 padding: "3px 10px",
                 borderRadius: "1000px",
+                minHeight: "20px",
               }}
             >
-              {username}
+              {username || "Bulba?"}
             </Text>
           </Box>
           {/* Photo Area */}
