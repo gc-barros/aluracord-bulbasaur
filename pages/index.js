@@ -72,10 +72,10 @@ export default function PaginaInicial() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: appConfig.theme.colors.primary[500],
-          backgroundImage:
-            "url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)",
+          backgroundColor: appConfig.theme.colors.neutrals[400],
+          backgroundImage: "url(/bulbassaur.jfif)",
           backgroundRepeat: "no-repeat",
+          backgroundPosition: "center bottom",
           backgroundSize: "cover",
           backgroundBlendMode: "multiply",
         }}
@@ -111,7 +111,7 @@ export default function PaginaInicial() {
               marginBottom: "32px",
             }}
           >
-            <Titulo tag="h2">Boas vindas de volta!</Titulo>
+            <Titulo tag="h2">Boas-vindas de volta!</Titulo>
             <Text
               variant="body3"
               styleSheet={{
@@ -128,7 +128,7 @@ export default function PaginaInicial() {
                 neutral: {
                   textColor: appConfig.theme.colors.neutrals[200],
                   mainColor: appConfig.theme.colors.neutrals[900],
-                  mainColorHighlight: appConfig.theme.colors.primary[500],
+                  mainColorHighlight: appConfig.theme.colors.bulbasaur[300],
                   backgroundColor: appConfig.theme.colors.neutrals[800],
                 },
               }}
@@ -139,9 +139,9 @@ export default function PaginaInicial() {
               fullWidth
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
-                mainColor: appConfig.theme.colors.primary[500],
-                mainColorLight: appConfig.theme.colors.primary[400],
-                mainColorStrong: appConfig.theme.colors.primary[600],
+                mainColor: appConfig.theme.colors.bulbasaur[200],
+                mainColorLight: appConfig.theme.colors.bulbasaur[300],
+                mainColorStrong: appConfig.theme.colors.bulbasaur[100],
               }}
             />
           </Box>
