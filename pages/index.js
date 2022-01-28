@@ -127,8 +127,6 @@ export default function PaginaInicial() {
                         .then(function (response) {
                           if (response.ok) {
                             response.json().then(function (json) {
-                              console.log(json.login);
-
                               setUsername(valor);
                               setUserinfo(json);
                             });
@@ -138,7 +136,7 @@ export default function PaginaInicial() {
                           console.log(error);
                         });
                     }
-                  }, 200)
+                  }, 100)
                 );
               }}
             />

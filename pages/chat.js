@@ -1,4 +1,4 @@
-import { Box, Text, TextField, Image, Button } from "@skynexui/components";
+import { Box, Text, TextField, Image, Button, Icon } from "@skynexui/components";
 import { useRouter } from "next/router";
 import React from "react";
 import appConfig from "../config.json";
@@ -25,7 +25,7 @@ export default function ChatPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: appConfig.theme.colors.neutrals[200],
+        backgroundColor: appConfig.theme.colors.neutrals[400],
         backgroundImage: `url(/bulbassaur.jfif)`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center bottom",
@@ -43,8 +43,8 @@ export default function ChatPage() {
           borderRadius: "5px",
           backgroundColor: appConfig.theme.colors.neutrals[700],
           height: "100%",
-          maxWidth: "95%",
-          maxHeight: "95vh",
+          maxWidth: "60%",
+          maxHeight: "90vh",
           padding: "32px",
         }}
       >
@@ -104,6 +104,23 @@ export default function ChatPage() {
                 color: appConfig.theme.colors.neutrals[200],
               }}
             />
+            <button
+            onClick={(e) => {
+              e.preventDefault();
+              handleNovaMensagem(mensagem);
+            }}
+            style={{
+              backgroundColor: appConfig.theme.colors.bulbasaur[200],
+              padding: ".7rem",
+              color: "#FFF",
+              borderRadius: "50%",
+              border: "none",
+              fontSize: "1.2rem",
+              cursor: "pointer",
+              marginBottom: "5px"
+            }}>
+              <Icon label="Icon Component" name="FaArrowRight" />
+            </button>
           </Box>
         </Box>
       </Box>
@@ -127,7 +144,7 @@ function Header() {
         <Button
           variant="tertiary"
           colorVariant="neutral"
-          label="Logout"
+          label="Sair"
           href="/"
         />
       </Box>
@@ -188,7 +205,7 @@ function MessageList(props) {
                 }}
                 tag="span"
               >
-                {new Date().toLocaleDateString()}
+                {new Date().toLocaleDateString("pt-br", {hour: "numeric", minute: "numeric", second: "numeric"})}
               </Text>
             </Box>
             {mensagem.texto}
