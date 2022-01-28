@@ -1,5 +1,5 @@
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
-import React, { useEffect } from "react";
+import React from "react";
 import appConfig from "../config.json";
 import { useRouter } from 'next/router';
 
@@ -138,13 +138,14 @@ export default function PaginaInicial() {
                           console.log(error);
                         });
                     }
-                  }, 500)
+                  }, 200)
                 );
               }}
             />
             <Button
               type="submit"
               label="Entrar"
+              disabled={username < 1}
               fullWidth
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
