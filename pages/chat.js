@@ -14,9 +14,16 @@ export default function ChatPage() {
       id: listaDeMensagens.length + 1,
       de: username,
       texto: novaMensagem,
+      delete: false
     };
     setListaDeMensagens([mensagem, ...listaDeMensagens]);
     setMensagem("");
+  }
+
+  function recarregarMensagens() {
+    setListaDeMensagens(listaDeMensagens.filter(function (mensagem) {
+      return !mensagem.delete
+    }));
   }
 
   return (
@@ -40,10 +47,10 @@ export default function ChatPage() {
           flexDirection: "column",
           flex: 1,
           boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
-          borderRadius: "5px",
+          borderRadius: ".7rem 0 .7rem",
           backgroundColor: appConfig.theme.colors.neutrals[700],
           height: "100%",
-          maxWidth: "60%",
+          maxWidth: "500px",
           maxHeight: "90vh",
           padding: "32px",
         }}
@@ -57,11 +64,11 @@ export default function ChatPage() {
             height: "80%",
             backgroundColor: appConfig.theme.colors.neutrals[600],
             flexDirection: "column",
-            borderRadius: "5px",
+            borderRadius: ".7rem 0 .7rem",
             padding: "16px",
           }}
         >
-          <MessageList mensagens={listaDeMensagens} />
+          <MessageList mensagens={listaDeMensagens} recarregarMensagens={recarregarMensagens} />
 
           {/* Lista de mensagens: {
             listaDeMensagens.map((mensagemAtual) => {
@@ -97,7 +104,7 @@ export default function ChatPage() {
                 width: "100%",
                 border: "0",
                 resize: "none",
-                borderRadius: "5px",
+                borderRadius: ".5rem 0 .5rem",
                 padding: "6px 8px",
                 backgroundColor: appConfig.theme.colors.neutrals[800],
                 marginRight: "12px",
@@ -105,20 +112,21 @@ export default function ChatPage() {
               }}
             />
             <button
-            onClick={(e) => {
-              e.preventDefault();
-              handleNovaMensagem(mensagem);
-            }}
-            style={{
-              backgroundColor: appConfig.theme.colors.bulbasaur[200],
-              padding: ".7rem",
-              color: "#FFF",
-              borderRadius: "50%",
-              border: "none",
-              fontSize: "1.2rem",
-              cursor: "pointer",
-              marginBottom: "5px"
-            }}>
+              onClick={(e) => {
+                e.preventDefault();
+                handleNovaMensagem(mensagem);
+              }}
+              style={{
+                backgroundColor: appConfig.theme.colors.bulbasaur[200],
+                padding: ".81rem",
+                color: "#FFF",
+                borderRadius: ".5rem 0 .5rem",
+                border: "none",
+                fontSize: "1.2rem",
+                cursor: "pointer",
+                marginBottom: "8px",
+              }}
+            >
               <Icon label="Icon Component" name="FaArrowRight" />
             </button>
           </Box>
@@ -207,6 +215,23 @@ function MessageList(props) {
               >
                 {new Date().toLocaleDateString("pt-br", {hour: "numeric", minute: "numeric", second: "numeric"})}
               </Text>
+              <Icon 
+                name={"FaTrash"}
+                styleSheet={{
+                  marginLeft: "auto",
+                  marginRight: ".7rem",
+                  transition: ".4s ease all",
+                  cursor: "pointer",
+                  hover: {
+                    color: appConfig.theme.colors.bulbasaur[100]
+                  }
+                }}
+                onClick={() => {
+                  mensagem.delete = true;
+                  props.recarregarMensagens();
+                }}
+              >
+              </Icon>
             </Box>
             {mensagem.texto}
           </Text>
