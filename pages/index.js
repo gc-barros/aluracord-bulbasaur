@@ -20,21 +20,12 @@ function Titulo(props) {
 }
 
 export default function PaginaInicial() {
-  const [username, setUsername] = React.useState('');
+  const [username, setUsername] = React.useState("");
+  const [typedname, setTypedname] = React.useState("");
+  const [userinfo, setUserinfo] = React.useState("");
+  // Timeout para a escrita
+  const [typeTimeout, setTypeTimeout] = React.useState("");
   const roteamento = useRouter();
-
-  
-  let dadosGit = () => {
-    fetch(`https://api.github.com/users/${username}`, { 
-      headers: {
-        'Accept' : 'application/vnd.github.v3+json'
-      }})
-      .then(response => response.json())
-      .then( data => {
-        console.log(data.name)
-      })
-      .catch( error => console.error(error));
-    }
 
   return (
     <>
@@ -88,7 +79,11 @@ export default function PaginaInicial() {
               marginBottom: "32px",
             }}
           >
-            <Titulo tag="h2">🌷 Bem-vindo(a) de volta!</Titulo>
+            <Titulo tag="h2">
+              🌷 Bem-vindo(a)
+              {userinfo.name ? `, ${userinfo.name.split(" ")[0]}` : " de volta"}
+              !
+            </Titulo>
             <Text
               variant="body3"
               styleSheet={{
@@ -114,20 +109,42 @@ export default function PaginaInicial() {
                   backgroundColor: appConfig.theme.colors.neutrals[800],
                 },
               }}
-              value={username}
               placeholder="GitHub username"
               onChange={function (event) {
                 // Onde tá o valor?
                 const valor = event.target.value;
                 // Trocar o valor da variável
-                setUsername(valor);
-                // dadosGit();
+                setTypedname(valor);
+
+                if (typeTimeout) {
+                  clearTimeout(typeTimeout);
+                }
+
+                setTypeTimeout(
+                  setTimeout(() => {
+                    if (typedname.length > 1) {
+                      fetch("https://api.github.com/users/" + valor)
+                        .then(function (response) {
+                          if (response.ok) {
+                            response.json().then(function (json) {
+                              console.log(json.login);
+
+                              setUsername(valor);
+                              setUserinfo(json);
+                            });
+                          }
+                        })
+                        .catch(function (error) {
+                          console.log(error);
+                        });
+                    }
+                  }, 500)
+                );
               }}
             />
             <Button
               type="submit"
               label="Entrar"
-              disabled={username.length < 3}
               fullWidth
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
@@ -159,18 +176,6 @@ export default function PaginaInicial() {
               borderRadius: "1rem 0 1rem",
             }}
           >
-            <Image
-              styleSheet={{
-                borderRadius: "50%",
-                marginBottom: "16px",
-                marginTop: "1rem",
-              }}
-              src={
-                username.length > 2
-                  ? `https://github.com/${username}.png`
-                  : `https://i.gifer.com/8XbJ.gif`
-              }
-            />
             <Text
               variant="body4"
               styleSheet={{
@@ -182,6 +187,31 @@ export default function PaginaInicial() {
               }}
             >
               {username || "Bulba?"}
+            </Text>
+            <Image
+              styleSheet={{
+                borderRadius: "50%",
+                marginBottom: "16px",
+                marginTop: "1rem",
+              }}
+              src={
+                username.length > 1
+                  ? `https://github.com/${username}.png`
+                  : `https://i.gifer.com/8XbJ.gif`
+              }
+            />
+            <Text
+              variant="body4"
+              styleSheet={{
+                color: appConfig.theme.colors.neutrals[200],
+                fontSize: ".8rem",
+                fontWeight: "600",
+                padding: "3px 10px",
+                borderRadius: "1000px",
+                minHeight: "20px",
+              }}
+            >
+              {userinfo.name ? `🌱 ${userinfo.name}` : ""}
             </Text>
           </Box>
           {/* Photo Area */}
