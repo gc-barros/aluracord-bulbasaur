@@ -53,6 +53,14 @@ export default function ChatPage() {
     }));
   }
 
+  async function handleDeletaMensagem(idNumber) {
+    console.log('deletando')
+    const { data, error } = await supabaseClient
+      .from('mensagens')
+      .delete()
+      .match({ id: idNumber})
+  }
+
   return (
     <Box
       styleSheet={{
@@ -95,7 +103,12 @@ export default function ChatPage() {
             padding: "16px",
           }}
         >
-          <MessageList mensagens={listaDeMensagens} recarregarMensagens={recarregarMensagens} />
+          <MessageList
+            username={username}
+            mensagens={listaDeMensagens}
+            recarregarMensagens={recarregarMensagens}
+            handleDeletaMensagem={handleDeletaMensagem}
+          />
 
           {/* Lista de mensagens: {
             listaDeMensagens.map((mensagemAtual) => {
@@ -218,7 +231,7 @@ function MessageList(props) {
               styleSheet={{
                 marginBottom: "8px",
                 display: "flex",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <Image
@@ -231,7 +244,14 @@ function MessageList(props) {
                 }}
                 src={`https://github.com/${mensagem.de}.png`}
               />
-              <Text tag="strong">{mensagem.de}</Text>
+              <Text
+                tag="strong"
+                styleSheet={{
+                  color: appConfig.theme.colors.bulbasaur[100],
+                }}
+              >
+                {mensagem.de}
+              </Text>
               <Text
                 styleSheet={{
                   fontSize: "10px",
@@ -240,25 +260,26 @@ function MessageList(props) {
                 }}
                 tag="span"
               >
-                {new Date().toLocaleDateString("pt-br", {hour: "numeric", minute: "numeric", second: "numeric"})}
+                {new Date(mensagem.created_at).toLocaleDateString("pt-br", {hour: "numeric", minute: "numeric", second: "numeric"})}
               </Text>
-              <Icon 
+              <Icon
                 name={"FaTrash"}
                 styleSheet={{
+                  display: props.username === mensagem.de ? "block" : "none",
                   marginLeft: "auto",
                   marginRight: ".7rem",
                   transition: ".4s ease all",
                   cursor: "pointer",
                   hover: {
-                    color: appConfig.theme.colors.bulbasaur[100]
-                  }
+                    color: appConfig.theme.colors.bulbasaur[100],
+                  },
                 }}
                 onClick={() => {
                   mensagem.delete = true;
+                  props.handleDeletaMensagem(mensagem.id);
                   props.recarregarMensagens();
                 }}
-              >
-              </Icon>
+              ></Icon>
             </Box>
             {mensagem.texto}
           </Text>
