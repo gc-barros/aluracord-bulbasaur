@@ -124,17 +124,18 @@ export default function PaginaInicial() {
                   setTimeout(() => {
                     if (typedname.length > 1) {
                       fetch("https://api.github.com/users/" + valor)
-                        .then(function (response) {
-                          if (response.ok) {
-                            response.json().then(function (json) {
-                              setUsername(valor);
-                              setUserinfo(json);
-                            });
-                          }
-                        })
-                        .catch(function (error) {
-                          console.log(error);
-                        });
+                      .then(async function (response) {
+                        if (response.ok) {
+                          await response.json()
+                          .then(function (json) {
+                            setUsername(valor);
+                            setUserinfo(json);
+                          });
+                        }
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      });
                     }
                   }, 100)
                 );
