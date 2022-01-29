@@ -15,7 +15,6 @@ function escutaMensagensEmTempoReal(adicionaMensagem) {
     .from("mensagens")
     .on("INSERT", (respostaLive) => {
       adicionaMensagem(respostaLive.new);
-      console.log("Houve uma nova mensagem!")
     })
     .subscribe();
 }
@@ -310,7 +309,7 @@ function MessageList(props) {
               ? <Image 
                   src={mensagem.texto.replace(":sticker:", "")}
                   styleSheet={{
-                    maxWidth: "100px",
+                    maxHeight: "120px",
                   }}
                 />
               : mensagem.texto}
