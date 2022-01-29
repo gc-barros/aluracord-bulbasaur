@@ -3,11 +3,22 @@ import { useRouter } from "next/router";
 import React from "react";
 import appConfig from "../config.json";
 import { createClient } from "@supabase/supabase-js";
+import { ButtonSendSticker } from '../src/components/ButtonSendSticker';
 
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQ2NjA4MSwiZXhwIjoxOTU5MDQyMDgxfQ.ogv6-GRISfEa0Njc7EACvXz0VBB0u88ffiSJbvIuoTo";
 const SUPABASE_URL = "https://qbfsnmmnhljbwmrnxzxt.supabase.co";
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+function escutaMensagensEmTempoReal(adicionaMensagem) {
+  return supabaseClient
+    .from("mensagens")
+    .on("INSERT", (respostaLive) => {
+      adicionaMensagem(respostaLive.new);
+      console.log("Houve uma nova mensagem!")
+    })
+    .subscribe();
+}
 
 export default function ChatPage() {
   const [mensagem, setMensagem] = React.useState("");
@@ -24,6 +35,12 @@ export default function ChatPage() {
         console.log("Dados da consulta: ", dados.data);
         setListaDeMensagens(dados.data);
       });
+
+    escutaMensagensEmTempoReal((novaMensagem) => {
+      setListaDeMensagens((valorAtualDaLista) => {
+        return [novaMensagem, ...valorAtualDaLista];
+      });
+    });
   }, []);
 
   function handleNovaMensagem(novaMensagem) {
@@ -39,8 +56,8 @@ export default function ChatPage() {
       // Tem que ser um objeto com os mesmos campos do supabase
       .insert([mensagem])
       .then(({ data }) => {
-        console.log("Criando mensagem", data);
-        setListaDeMensagens([data[0], ...listaDeMensagens]);
+        // console.log("Criando mensagem", data);
+        // setListaDeMensagens([data[0], ...listaDeMensagens]);
       })
 
     // setListaDeMensagens([mensagem, ...listaDeMensagens]);
@@ -85,7 +102,7 @@ export default function ChatPage() {
           borderRadius: ".7rem 0 .7rem",
           backgroundColor: appConfig.theme.colors.neutrals[700],
           height: "100%",
-          maxWidth: "500px",
+          maxWidth: "600px",
           maxHeight: "90vh",
           padding: "32px",
         }}
@@ -149,6 +166,11 @@ export default function ChatPage() {
                 backgroundColor: appConfig.theme.colors.neutrals[800],
                 marginRight: "12px",
                 color: appConfig.theme.colors.neutrals[200],
+              }}
+            />
+            <ButtonSendSticker 
+              onStickerClick={(sticker) => {
+                handleNovaMensagem(":sticker: " + sticker);
               }}
             />
             <button
@@ -260,7 +282,10 @@ function MessageList(props) {
                 }}
                 tag="span"
               >
-                {new Date(mensagem.created_at).toLocaleDateString("pt-br", {hour: "numeric", minute: "numeric", second: "numeric"})}
+                {new Date(mensagem.created_at).toLocaleDateString("pt-br", {
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
               </Text>
               <Icon
                 name={"FaTrash"}
@@ -281,7 +306,14 @@ function MessageList(props) {
                 }}
               ></Icon>
             </Box>
-            {mensagem.texto}
+            {mensagem.texto.startsWith(":sticker:")
+              ? <Image 
+                  src={mensagem.texto.replace(":sticker:", "")}
+                  styleSheet={{
+                    maxWidth: "100px",
+                  }}
+                />
+              : mensagem.texto}
           </Text>
         );
       })}
