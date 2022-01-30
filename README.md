@@ -8,7 +8,7 @@
 
 ___
 
-- 🐱‍💻 Chat em tempo real, customizado com o tema Bulbasaur, desenvolvido com Next.js e React.js.
+- 🐱‍💻 Chat em tempo real, customizado com o tema Bulbasaur, desenvolvido com Next.js e React.js. Cada usuário pode enviar e excluir suas próprias mensagens e figurinhas.
 - 📗 O usuário pode se conectar ao chat utilizando seu username do GitHub, com informações obtidas via REST API. 
 - 🧰 Foram utilizados componentes da biblioteca SkynexUI para a criação das páginas e o Supabase como <em>back-end as a service</em>, a fim de armazenar as mensagens e possibilitar o <em>real time</em>.
 
