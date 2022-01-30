@@ -34,7 +34,7 @@ export default function PaginaInicial() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: appConfig.theme.colors.neutrals[400],
+          backgroundColor: appConfig.theme.colors.neutrals[300],
           backgroundImage: "url(/bulbassaur.jfif)",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center bottom",

@@ -43,24 +43,26 @@ export default function ChatPage() {
   }, []);
 
   function handleNovaMensagem(novaMensagem) {
-    const mensagem = {
-      // id: listaDeMensagens.length + 1,
-      de: username,
-      texto: novaMensagem,
-      delete: false
-    };
-
-    supabaseClient
-      .from('mensagens')
-      // Tem que ser um objeto com os mesmos campos do supabase
-      .insert([mensagem])
-      .then(({ data }) => {
-        // console.log("Criando mensagem", data);
-        // setListaDeMensagens([data[0], ...listaDeMensagens]);
-      })
-
-    // setListaDeMensagens([mensagem, ...listaDeMensagens]);
-    setMensagem("");
+    if (novaMensagem != "") {
+      const mensagem = {
+        // id: listaDeMensagens.length + 1,
+        de: username,
+        texto: novaMensagem,
+        delete: false
+      };
+  
+      supabaseClient
+        .from('mensagens')
+        // Tem que ser um objeto com os mesmos campos do supabase
+        .insert([mensagem])
+        .then(({ data }) => {
+          // console.log("Criando mensagem", data);
+          // setListaDeMensagens([data[0], ...listaDeMensagens]);
+        })
+  
+      // setListaDeMensagens([mensagem, ...listaDeMensagens]);
+      setMensagem("");
+    }
   }
 
   function recarregarMensagens() {
@@ -83,7 +85,7 @@ export default function ChatPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: appConfig.theme.colors.neutrals[400],
+        backgroundColor: appConfig.theme.colors.neutrals[300],
         backgroundImage: `url(/bulbassaur.jfif)`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center bottom",
@@ -256,12 +258,18 @@ function MessageList(props) {
               }}
             >
               <Image
+                onClick={
+                  () => {
+                    window.open(`https://github.com/${mensagem.de}`, '_blank');
+                  }
+                }
                 styleSheet={{
                   width: "20px",
                   height: "20px",
                   borderRadius: "50%",
                   display: "inline-block",
                   marginRight: "8px",
+                  cursor: "pointer"
                 }}
                 src={`https://github.com/${mensagem.de}.png`}
               />
